@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import *
+from tkinter import filedialog
 
 class PyGitClient():
     def __init__(self,repo_name) -> None:
@@ -24,23 +25,25 @@ class PyGitClientGUI(tk.Tk):
         self.minsize(width=500, height=750)
         self.gui_create_start_info()
         self.content_frame = None    
-    
+      
     def gui_select_dir(self):
+        path = StringVar()
+        def select_dir():
+            dir_path = filedialog.askdirectory()
+            path.set(dir_path)
+        
         self.gui_clear_frame()
         self.content_frame = tk.Frame(self)
         self.content_frame.pack(padx=5, pady=5, fill="both", expand=True)  
 
-        select = tk.Label(self.content_frame)
-        select.config(text="SELECT")
-        select.pack(padx=5,pady=5)
-
+        tk.Button(self.content_frame, text="Select Folder", command=select_dir).pack(padx=10,pady=10)
+        tk.Label(self.content_frame,textvariable=path).pack(padx=10,pady=10)
     def gui_make_dir(self):
         self.gui_clear_frame()
         self.content_frame = tk.Frame(self)
         self.content_frame.pack(padx=5, pady=5, fill="both", expand=True)
        
-        make = tk.Label(self.content_frame)
-        make.config(text="MAKE")
+        make = tk.Label(self.content_frame, text="MAKE")
         make.pack(padx=5,pady=5)
     
     def gui_clear_frame(self):
