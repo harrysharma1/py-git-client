@@ -1,11 +1,13 @@
 import tkinter as tk
 from tkinter import *
+from tkinter import messagebox
 from tkinter import filedialog
+import os
+import subprocess
 
 class PyGitClient():
-    def __init__(self,repo_name) -> None:
-        self.repo_name = repo_name
-
+    def __init__(self) -> None:
+        pass
     def git_init(self):
         pass 
 
@@ -18,9 +20,13 @@ class PyGitClient():
     def git_push(self):
         pass 
 
+    def git_is_repo(self,path):
+       return subprocess.call(['git', '-C', path, 'status'], stderr=subprocess.STDOUT, stdout = open(os.devnull, 'w')) == 0
+
 class PyGitClientGUI(tk.Tk):
     def __init__(self):
         super().__init__()
+        self.pygitclient = PyGitClient()
         self.title("py-git")
         self.minsize(width=500, height=750)
         self.gui_create_start_info()
@@ -30,8 +36,11 @@ class PyGitClientGUI(tk.Tk):
         path = StringVar()
         def select_dir():
             dir_path = filedialog.askdirectory()
-            path.set(dir_path)
-        
+            if self.pygitclient.git_is_repo(dir_path):
+                path.set(dir_path)
+            else:
+                messagebox.showerror("Error","Directory is not a git repository")
+                
         self.gui_clear_frame()
         self.content_frame = tk.Frame(self)
         self.content_frame.pack(padx=5, pady=5, fill="both", expand=True)  
