@@ -1,10 +1,7 @@
-import os
-import tkinter
-from tkinter import Label
-from tkinter import filedialog
-import tkinter.messagebox
+import tkinter as tk
+from tkinter import *
 
-class PyGitClient:
+class PyGitClient():
     def __init__(self,repo_name) -> None:
         self.repo_name = repo_name
 
@@ -20,38 +17,38 @@ class PyGitClient:
     def git_push(self):
         pass 
 
-class PyGitClientGUI:
-    def __init__(self) -> None:
-        self.path = ""
-        self.dir = ""
-        self.root = tkinter.Tk()
-        self.root.minsize(width=450,height=600)
-
-    def select_path(self):
-        p = filedialog.askdirectory()
-        self.path = p
+class PyGitClientGUI(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("py-git")
+        self.minsize(width=500, height=750)
+        self.gui_create_start_info()
     
-    def make_dir(self):
-        dirs = os.path.join(self.path,self.dir)
-        if not os.path.exists(dirs):
-            os.mkdir(dirs)
-            tkinter.messagebox.showinfo('Tips:','Folder name created successfully!')
-        else:
-            tkinter.messagebox.showerror('Tips','The folder name exists, please change it')
- 
-    def setup(self):
-        title = tkinter.Label(self.root, text="Python Git Client")
-        title.pack(padx=5,pady=5)
-        information = tkinter.Label(self.root, text="This is a simple Git client made with tkinter")
-        information.pack(padx=5,pady=10)
+    def gui_select_dir(self):
+        select = tk.Label(self)
+        select.config(text="SELECT")
+    def gui_make_dir(self):
+        make = tk.Label(self)
+        make.config(text="MAKE")
 
+    def gui_create_start_info(self):
+        tk.Label(self,text="Python Git Client").pack(padx=5,pady=5)
+        tk.Label(self,text="This is a simple Git client built with Python/Tkinter").pack(padx=5,pady=10)
 
-    def run(self):
-        self.setup()
-        self.root.mainloop()
-
-
-
+        def select():
+            if choice.get()==1:
+                text = "Select the location to create your repository:"
+                label.config(text=text)
+                self.gui_select_dir()
+            else:
+                text = "Select a already created git repository:"
+                label.config(text=text)
+                self.gui_make_dir() 
+        choice = IntVar()
+        tk.Radiobutton(self, text="Select directory", value=1,  variable=choice, command=select).pack(anchor=W)
+        tk.Radiobutton(self, text="Make directory", value=2, variable=choice, command=select).pack(anchor=W)
+        label = tk.Label(self)
+        label.pack()
 if __name__ == "__main__":
     gui = PyGitClientGUI()
-    gui.run()
+    gui.mainloop()
