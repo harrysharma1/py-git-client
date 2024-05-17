@@ -23,13 +23,30 @@ class PyGitClientGUI(tk.Tk):
         self.title("py-git")
         self.minsize(width=500, height=750)
         self.gui_create_start_info()
+        self.content_frame = None    
     
     def gui_select_dir(self):
-        select = tk.Label(self)
+        self.gui_clear_frame()
+        self.content_frame = tk.Frame(self)
+        self.content_frame.pack(padx=5, pady=5, fill="both", expand=True)  
+
+        select = tk.Label(self.content_frame)
         select.config(text="SELECT")
+        select.pack(padx=5,pady=5)
+
     def gui_make_dir(self):
-        make = tk.Label(self)
+        self.gui_clear_frame()
+        self.content_frame = tk.Frame(self)
+        self.content_frame.pack(padx=5, pady=5, fill="both", expand=True)
+       
+        make = tk.Label(self.content_frame)
         make.config(text="MAKE")
+        make.pack(padx=5,pady=5)
+    
+    def gui_clear_frame(self):
+        if self.content_frame:
+            self.content_frame.destroy()  
+            self.content_frame = None 
 
     def gui_create_start_info(self):
         tk.Label(self,text="Python Git Client").pack(padx=5,pady=5)
